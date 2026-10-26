@@ -1,0 +1,593 @@
+/* Leadly Admin Dashboard — matches the landing page's dark monochrome aesthetic */
+
+.leadly-admin {
+  min-height: 100vh;
+  background-color: #000000;
+  color: #ffffff;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Top bar */
+.leadly-admin__topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+}
+
+.leadly-admin__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.leadly-admin__brand-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.75rem;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.leadly-admin__brand-name {
+  font-family: 'Sora', 'Inter', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.leadly-admin__brand-suffix {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin-left: 0.25rem;
+}
+
+.leadly-admin__topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.leadly-admin__user-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.875rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.03);
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Layout */
+.leadly-admin__body {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.leadly-admin__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.leadly-admin__title {
+  font-family: 'Sora', 'Inter', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.leadly-admin__subtitle {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.5;
+}
+
+/* Toolbar */
+.leadly-admin__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.leadly-admin__search {
+  position: relative;
+  flex: 1;
+  min-width: 14rem;
+}
+
+.leadly-admin__search-icon {
+  position: absolute;
+  top: 50%;
+  left: 0.875rem;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+}
+
+.leadly-admin__search-input {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: #0a0a0a;
+  color: #ffffff;
+  padding: 0.625rem 1rem 0.625rem 2.5rem;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.leadly-admin__search-input:focus {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.leadly-admin__search-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.leadly-admin__select {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: #0a0a0a;
+  color: #ffffff;
+  padding: 0.625rem 2rem 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239A9A9A' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.625rem center;
+  cursor: pointer;
+}
+
+.leadly-admin__refresh {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: #0a0a0a;
+  color: #ffffff;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.leadly-admin__refresh:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  background-color: #141414;
+}
+
+.leadly-admin__refresh:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Stats grid */
+.leadly-admin__stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .leadly-admin__stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.leadly-admin__stat {
+  border-radius: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #0a0a0a;
+  padding: 1.25rem;
+}
+
+.leadly-admin__stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.leadly-admin__stat-value {
+  font-family: 'Sora', 'Inter', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 2.25rem;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-top: 0.5rem;
+}
+
+.leadly-admin__stat-suffix {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-left: 0.25rem;
+}
+
+/* Card */
+.leadly-admin__card {
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #0a0a0a;
+  overflow: hidden;
+}
+
+.leadly-admin__table-wrap {
+  overflow-x: auto;
+}
+
+.leadly-admin__table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 56rem;
+}
+
+.leadly-admin__table thead th {
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.02);
+  white-space: nowrap;
+}
+
+.leadly-admin__table tbody td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.85);
+  vertical-align: middle;
+}
+
+.leadly-admin__table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.leadly-admin__table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.leadly-admin__table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.leadly-admin__name-cell {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.leadly-admin__whatsapp-cell {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.leadly-admin__message-cell {
+  max-width: 18rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.5;
+}
+
+.leadly-admin__message-cell-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.leadly-admin__time-cell {
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.leadly-admin__plan-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: capitalize;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.leadly-admin__plan-badge--starter {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.leadly-admin__plan-badge--pro {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.leadly-admin__plan-badge--free {
+  background-color: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.leadly-admin__delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.625rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.leadly-admin__delete-btn:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.leadly-admin__delete-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Empty / loading states */
+.leadly-admin__state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1.5rem;
+  gap: 0.5rem;
+}
+
+.leadly-admin__state-title {
+  font-family: 'Sora', 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.leadly-admin__state-text {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.55);
+  max-width: 24rem;
+}
+
+/* Inline notice (e.g. delete errors) */
+.leadly-admin__notice {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1rem;
+}
+
+/* Auth screen */
+.leadly-admin__auth {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  background-color: #000000;
+}
+
+.leadly-admin__auth-card {
+  width: 100%;
+  max-width: 26rem;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: #0a0a0a;
+  padding: 2rem;
+}
+
+.leadly-admin__auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.leadly-admin__auth-title {
+  font-family: 'Sora', 'Inter', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.leadly-admin__auth-subtitle {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: center;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.leadly-admin__field {
+  margin-bottom: 1rem;
+}
+
+.leadly-admin__label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0.375rem;
+}
+
+.leadly-admin__input {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: #000000;
+  color: #ffffff;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.leadly-admin__input:focus {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.leadly-admin__input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.leadly-admin__auth-error {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 0.75rem 1rem;
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1rem;
+}
+
+.leadly-admin__btn-primary {
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: #000000;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s ease, transform 0.05s ease;
+}
+
+.leadly-admin__btn-primary:hover {
+  background-color: #e8e8e8;
+}
+
+.leadly-admin__btn-primary:active {
+  transform: scale(0.98);
+}
+
+.leadly-admin__btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.leadly-admin__btn-secondary {
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 0.625rem 1.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.leadly-admin__btn-secondary:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.leadly-admin__auth-divider {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin: 1.25rem 0;
+}
+
+.leadly-admin__auth-switch {
+  text-align: center;
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.leadly-admin__auth-switch button {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.leadly-admin__auth-footer {
+  text-align: center;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 1.5rem;
+  line-height: 1.5;
+}
+
+.leadly-admin__spinner {
+  animation: leadly-spin 0.8s linear infinite;
+}
+
+@keyframes leadly-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Fade-in on mount */
+.leadly-admin__fade {
+  animation: leadly-fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes leadly-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

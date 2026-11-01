@@ -18,7 +18,7 @@ export function FinalCTA() {
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <button
-            onClick={() => open()}
+            onClick={() => window.open('https://forms.gle/ttwnzGohJnLoLYFE7','_blank')}
             className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-8 py-4 text-base font-bold text-black transition-all hover:bg-brand-porcelain active:scale-95 sm:w-auto"
           >
             Get 10 Buyers Free

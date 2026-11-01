@@ -24,7 +24,7 @@ export function Hero() {
 
           <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row lg:justify-start justify-center animate-fade-up animate-delay-200">
             <button
-              onClick={() => open()}
+              onClick={() => window.open('https://forms.gle/ttwnzGohJnLoLYFE7', '_blank')}
               className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-7 py-4 text-base font-bold text-black transition-all hover:bg-brand-porcelain active:scale-95 sm:w-auto"
             >
               Get My First 10 Buyers Free

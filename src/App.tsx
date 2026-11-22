@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
 import LeadlyAdminDashboard from './components/LeadlyAdminDashboard';
-import { LeadFormProvider } from './components/LeadFormContext';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { HowItWorks } from './components/HowItWorks';
@@ -9,38 +7,26 @@ import { Pricing } from './components/Pricing';
 import { FAQ } from './components/FAQ';
 import { FinalCTA } from './components/FinalCTA';
 import { Footer } from './components/Footer';
-import { LeadForm } from './components/LeadForm';
+import { VendorSignIn } from './components/VendorSignIn';
+import './components/seller.css';
 
-function App() {
-  const [path, setPath] = useState(window.location.pathname);
-
-  useEffect(() => {
-    const onPopState = () => setPath(window.location.pathname);
-    window.addEventListener('popstate', onPopState);
-    return () => window.removeEventListener('popstate', onPopState);
-  }, []);
-
-  if (path === '/admin') {
-    return <LeadlyAdminDashboard />;
-  }
-
+export default function App() {
+  const path = window.location.pathname.replace(/\/+$/, '');
+  if (path === '/admin') return <LeadlyAdminDashboard />;
+  if (path === '/sign-in' || path === '/seller') return <VendorSignIn path={path} />;
   return (
-    <LeadFormProvider>
-      <div className="min-h-screen bg-brand-black">
-        <Navbar />
-        <main>
-          <Hero />
-          <HowItWorks />
-          <WhoItsFor />
-          <Pricing />
-          <FAQ />
-          <FinalCTA />
-        </main>
-        <Footer />
-        <LeadForm />
-      </div>
-    </LeadFormProvider>
+    <div className="seller-site" id="top">
+      <a className="skip-content" href="#main">Skip to content</a>
+      <Navbar />
+      <main id="main">
+        <Hero />
+        <HowItWorks />
+        <WhoItsFor />
+        <Pricing />
+        <FAQ />
+        <FinalCTA />
+      </main>
+      <Footer />
+    </div>
   );
 }
-
-export default App;

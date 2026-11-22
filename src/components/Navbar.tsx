@@ -1,72 +1,38 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Menu, X, Zap } from 'lucide-react';
 
-const navLinks = [
-  { label: 'How it works', href: '#how-it-works' },
-  { label: 'Who it\'s for', href: '#who-its-for' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'FAQ', href: '#faq' },
+export function Brand() {
+  return <a className="site-brand" href="/" aria-label="LEADLY home"><span><Zap size={19} fill="currentColor" aria-hidden="true" /></span>LEADLY</a>;
+}
+
+const sections = [
+  ['How it works', '#how-it-works'], ['Who it’s for', '#who-its-for'], ['Pricing', '#pricing'], ['FAQ', '#faq'],
 ];
 
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-
+  const [open, setOpen] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    if (!open) return;
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') { setOpen(false); menuButton.current?.focus(); }
+    };
+    const large = window.matchMedia('(min-width: 801px)');
+    const resize = () => { if (large.matches) setOpen(false); };
+    document.addEventListener('keydown', escape);
+    large.addEventListener('change', resize);
+    return () => { document.removeEventListener('keydown', escape); large.removeEventListener('change', resize); };
+  }, [open]);
 
-  const handleNav = (href: string) => {
-    setMenuOpen(false);
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const openForm = () => window.open('https://forms.gle/ttwnzGohJnLoLYFE7','_blank');
-
-  return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-brand-black/80 backdrop-blur-xl border-b border-white/10' : 'bg-transparent'}`}>
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
-        <a href="#top" className="flex items-center gap-2 group">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-black transition-transform group-hover:scale-105">
-            <Zap className="h-5 w-5 fill-[currentColor]" />
-          </div>
-          <span className="font-display text-xl font-extrabold tracking-tight text-white">LEADLY</span>
-        </a>
-
-        <ul className="hidden items-center gap-8 lg:flex">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <button onClick={() => handleNav(link.href)} className="text-sm font-medium text-white/70 transition-colors hover:text-white">{link.label}</button>
-            </li>
-          ))}
-        </ul>
-
-        <div className="hidden lg:block">
-          <button onClick={openForm} className="rounded-full bg-white px-5 py-2.5 text-sm font-bold text-black transition-all hover:bg-brand-pink hover:text-white">Get 10 Buyers Free</button>
-        </div>
-
-        <button onClick={() => setMenuOpen((v) => !v)} className="flex h-10 w-10 items-center justify-center rounded-lg text-white lg:hidden" aria-label="Toggle menu">
-          {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
-      </nav>
-
-      {menuOpen && (
-        <div className="border-t border-white/10 bg-brand-black/95 backdrop-blur-xl lg:hidden">
-          <ul className="mx-auto max-w-7xl space-y-1 px-5 py-4 sm:px-8">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <button onClick={() => handleNav(link.href)} className="block w-full rounded-lg px-3 py-3 text-left text-base font-medium text-white/80 transition hover:bg-white/10 hover:text-white">{link.label}</button>
-              </li>
-            ))}
-            <li className="pt-2">
-              <button onClick={() => { setMenuOpen(false); openForm(); }} className="block w-full rounded-full bg-white px-5 py-3 text-center text-base font-bold text-black">Get 10 Buyers Free</button>
-            </li>
-          </ul>
-        </div>
-      )}
-    </header>
-  );
+  return <header className="site-header"><nav className="site-width nav-inner" aria-label="Main navigation">
+    <Brand />
+    <div className={'nav-links' + (open ? ' nav-open' : '')} id="site-navigation">
+      {sections.map(([text, href]) => <a key={href} href={href} onClick={() => setOpen(false)}>{text}</a>)}
+    </div>
+    <div className="nav-actions"><a className="site-btn btn-quiet" href="/sign-in">Sign in</a>
+      <button ref={menuButton} className="menu-toggle" type="button" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} aria-controls="site-navigation" onClick={() => setOpen(!open)}>
+        {open ? <X size={21} /> : <Menu size={21} />}
+      </button>
+    </div>
+  </nav></header>;
 }

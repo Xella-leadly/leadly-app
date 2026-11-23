@@ -8,6 +8,7 @@ export function LeadForm({ user, plan }: { user: User; plan: SellerPlan | null }
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
   const [error, setError] = useState('');
   const sending = useRef(false);
+  const previousRequest = useRef<{ payload: string; key: string } | null>(null);
   const planName = plan === 'starter' ? 'Starter' : 'Pro';
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -31,11 +32,24 @@ export function LeadForm({ user, plan }: { user: User; plan: SellerPlan | null }
         window.location.replace(sellerLink('/sign-in', plan));
         return;
       }
-      const result = await supabase.functions.invoke('submit-lead', {
-        headers: { Authorization: 'Bearer ' + session.access_token },
-        body: { name, whatsapp, business, plan, message: message || null },
+      const payload = { name, whatsapp, business, plan, message: message || null };
+      const serialized = JSON.stringify(payload);
+      if (previousRequest.current?.payload !== serialized) {
+        previousRequest.current = { payload: serialized, key: crypto.randomUUID() };
+      }
+      const { data, error } = await supabase.rpc('submit_seller_request', {
+        p_key: previousRequest.current.key, p_name: name, p_whatsapp: whatsapp,
+        p_business: business, p_plan: plan, p_message: payload.message,
       });
-      if (result.error || result.data?.success !== true) throw new Error('unconfirmed');
+      if (error?.code === 'PGRST202') {
+        // Keep the existing signed-in form working during the database rollout.
+        const legacy = await supabase.functions.invoke('submit-lead', {
+          headers: { Authorization: 'Bearer ' + session.access_token }, body: payload,
+        });
+        if (legacy.error || legacy.data?.success !== true) throw new Error('Unconfirmed request');
+      } else if (error || typeof data !== 'string' || !data) {
+        throw new Error('Unconfirmed request');
+      }
       setStatus('sent');
     } catch {
       setError('We couldn’t confirm that your request was saved. Your details are still here.');

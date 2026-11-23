@@ -1,5 +1,6 @@
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
-  ]
+  "headers": [
+    { "source": "/(sign-in|seller|admin)(/.*)?", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }] }
+  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }

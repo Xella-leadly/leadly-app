@@ -71,6 +71,13 @@ export default function LeadlyAdminDashboard() {
     return <AuthScreen onSignedIn={(s) => setSession(s)} />;
   }
 
+  if (session.user.app_metadata?.leadly_admin !== true) {
+    return <main className="leadly-admin__auth"><section className="leadly-admin__auth-card">
+      <h1>Admin access required</h1><p>This account does not have permission to manage buyer requests.</p>
+      <a href="/seller">Go to your seller workspace</a>
+    </section></main>;
+  }
+
   return <Dashboard session={session} onSignOut={() => setSession(null)} />;
 }
 
@@ -359,7 +366,6 @@ function formatTime(iso: string): string {
 /* ---------------- Auth screen ---------------- */
 
 function AuthScreen({ onSignedIn }: { onSignedIn: (s: Session) => void }) {
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -377,32 +383,15 @@ function AuthScreen({ onSignedIn }: { onSignedIn: (s: Session) => void }) {
       return;
     }
 
-    const result =
-      mode === 'signin'
-        ? await supabase.auth.signInWithPassword({ email: trimmedEmail, password })
-        : await supabase.auth.signUp({ email: trimmedEmail, password });
-
-    const err = result.error;
-    if (err) {
-      setError(
-        mode === 'signin'
-          ? 'Could not sign in. Check your email and password.'
-          : 'Could not create your account. That email may already be in use.'
-      );
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email: trimmedEmail, password });
+      if (error || !data.session) setError('Could not sign in. Check your email and password.');
+      else onSignedIn(data.session);
+    } catch {
+      setError('Connection failed. Please try again.');
+    } finally {
       setSubmitting(false);
-      return;
     }
-
-    // For sign-up without email confirmation, Supabase returns a session immediately.
-    const nextSession = 'session' in result.data ? result.data.session : null;
-    if (nextSession) {
-      onSignedIn(nextSession);
-    } else {
-      // Sign-up that requires confirmation: switch to sign-in hint.
-      setMode('signin');
-      setError('Account created. Sign in with your email and password.');
-    }
-    setSubmitting(false);
   };
 
   return (
@@ -417,12 +406,10 @@ function AuthScreen({ onSignedIn }: { onSignedIn: (s: Session) => void }) {
         </div>
 
         <h1 className="leadly-admin__auth-title">
-          {mode === 'signin' ? 'Welcome back' : 'Create your admin account'}
+          Admin sign-in
         </h1>
         <p className="leadly-admin__auth-subtitle">
-          {mode === 'signin'
-            ? 'Sign in to view and manage leads collected from your landing page.'
-            : 'Set up the operator account that can view and manage leads.'}
+          Sign in with your authorized LEADLY operator account.
         </p>
 
         {error && <div className="leadly-admin__auth-error">{error}</div>}
@@ -449,44 +436,20 @@ function AuthScreen({ onSignedIn }: { onSignedIn: (s: Session) => void }) {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
+              autoComplete="current-password"
             />
           </div>
 
           <button type="submit" className="leadly-admin__btn-primary" disabled={submitting}>
             {submitting ? (
               <Loader2 size={16} className="leadly-admin__spinner" />
-            ) : mode === 'signin' ? (
-              'Sign in'
             ) : (
-              'Create account'
+              'Sign in'
             )}
           </button>
         </form>
 
-        <div className="leadly-admin__auth-divider" />
 
-        <div className="leadly-admin__auth-switch">
-          {mode === 'signin' ? (
-            <>
-              No admin account yet?{' '}
-              <button onClick={() => { setMode('signup'); setError(''); }}>
-                Create one
-              </button>
-            </>
-          ) : (
-            <>
-              Already have an account?{' '}
-              <button onClick={() => { setMode('signin'); setError(''); }}>
-                Sign in
-              </button>
-            </>
-          )}
-        </div>
-
-        <p className="leadly-admin__auth-footer">
-          Only signed-in admins can view leads. Visitors can submit leads from the landing page without an account.
-        </p>
       </div>
     </div>
   );

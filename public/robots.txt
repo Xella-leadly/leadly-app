@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://leadly-app-1dun.vercel.app/sitemap.xml
